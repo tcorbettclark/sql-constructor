@@ -1,6 +1,6 @@
 import unittest
 
-from sqlcon import make_valid_name
+from sqlcon import make_valid_name, is_invalid_name
 
 
 class TestMakeValidName(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestMakeValidName(unittest.TestCase):
         self.assertEqual(make_valid_name("ABc123"), "ABc123")
         self.assertEqual(make_valid_name("ABc_123"), "ABc_123")
 
-    def test_leading_numbers(self):
+    def test_numbers(self):
         self.assertEqual(make_valid_name("12abc"), "abc")
         self.assertEqual(make_valid_name("012abc"), "abc")
         self.assertEqual(make_valid_name("012abc345"), "abc345")
@@ -33,3 +33,27 @@ class TestMakeValidName(unittest.TestCase):
         self.assertEqual(make_valid_name("abc\ndef"), "abcdef")
         self.assertEqual(make_valid_name("\n\nabc\ndef"), "abcdef")
         self.assertEqual(make_valid_name("\n\nabc\ndef\n"), "abcdef")
+
+
+class TestIsInvalidName(unittest.TestCase):
+    def test_empty(self):
+        self.assertTrue(is_invalid_name(""))
+
+    def test_valid_names(self):
+        self.assertFalse(is_invalid_name("abc123"))
+        self.assertFalse(is_invalid_name("A2b3C"))
+        self.assertFalse(is_invalid_name("_A"))
+        self.assertFalse(is_invalid_name("_"))
+        self.assertFalse(is_invalid_name("abc_123"))
+
+    def test_hypens(self):
+        self.assertTrue(is_invalid_name("abc-123"))
+        self.assertTrue(is_invalid_name("abc-"))
+        self.assertTrue(is_invalid_name("-abc"))
+
+    def test_leading_numbers(self):
+        self.assertTrue(is_invalid_name("123abc"))
+
+    def test_whitespace(self):
+        self.assertTrue(is_invalid_name("abc def"))
+        self.assertTrue(is_invalid_name("abc\ndef"))
