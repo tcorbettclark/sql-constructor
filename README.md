@@ -12,8 +12,8 @@ Like all programming languages, the task of writing good SQL is made a little
 bit easier by good formatting and layout - reducing the cognitive load. Doing
 this with completely static SQL is possible e.g. with static formatters, but
 much harder to achieve when programmatically constructing the SQL. In my
-experience one looses the formmating in *both* the generating Python code *and*
-in the generated SQL. Ouch.
+experience one easily looses the formating in *both* the generating Python code
+*and* in the generated SQL. Ouch.
 
 This package aims to solve this problem with a particular programming pattern
 and a small number of utility functions.
@@ -42,6 +42,6 @@ TODO
 * Run: `black .`
 * Run: `isort`
 * Run: `flake8 .`
-* Run: `nose2 -v`
+* Run: `nose2 -v tests`
 * Run: `poetry export -f requirements.txt >requirements.txt` (for snyk scanning)
 * Ensure `git tag`, the package version (via `poetry version`), and `sqlcon.__version__` are all equal!
