@@ -1,3 +1,5 @@
+![Continuous Integration tests etc](https://github.com/tcorbettclark/sql-constructor/workflows/Continuous%20Integration%20tests%20etc/badge.svg)
+
 # sql-constructor
 
 Convenient functions and approach for constructing indented SQL from Python.
