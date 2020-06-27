@@ -1,5 +1,7 @@
 ![Continuous Integration tests etc](https://github.com/tcorbettclark/sql-constructor/workflows/Continuous%20Integration%20tests%20etc/badge.svg)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/tcorbettclark/sql-constructor/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/tcorbettclark/sql-constructor?targetFile=requirements.txt)
+
 # sql-constructor
 
 Convenient functions and approach for constructing indented SQL from Python.
