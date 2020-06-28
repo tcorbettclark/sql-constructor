@@ -93,7 +93,9 @@ def joinwith(a_list, include_last=False, separator=","):
         return [_add_trailing(a, separator) for a in a_list]
     else:
         if len(a_list) > 0:
-            return [_add_trailing(a, separator) for a in a_list[:-1]] + [a_list[-1]]
+            head = [_add_trailing(a, separator) for a in a_list[:-1]]
+            tail = [_add_trailing(a_list[-1], "")]  # Ensure we still use _strip
+            return head + tail
         else:
             return []
 
