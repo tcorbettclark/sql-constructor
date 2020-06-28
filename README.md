@@ -42,7 +42,8 @@ In fact the whole idea is not really about SQL at all, but about managing text.
 
 ## Example
 
-Some examples will illustrate the approach.
+A simple example will illustrate the approach. From the perspective of SQL the
+subquery is unnecessary, but is used purely to show composition.
 
 ```python
 import sqlcon
@@ -52,7 +53,7 @@ dq = sqlcon.double_quote
 
 
 def select_columns(variables):
-    yield sqlcon.indented_joinwith(dq(v) for v in variables)
+    yield sqlcon.joinwith(dq(v) for v in variables)
 
 
 def subquery():
@@ -79,7 +80,7 @@ def example(variables, condition):
     yield """
         SELECT
     """
-    yield select_columns(variables)
+    yield 1, select_columns(variables), -1
     yield """
         FROM
             (

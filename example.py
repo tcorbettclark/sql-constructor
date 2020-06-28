@@ -5,7 +5,7 @@ dq = sqlcon.double_quote
 
 
 def select_columns(variables):
-    yield sqlcon.indented_joinwith(dq(v) for v in variables)
+    yield sqlcon.joinwith(dq(v) for v in variables)
 
 
 def subquery():
@@ -32,7 +32,7 @@ def example(variables, condition):
     yield """
         SELECT
     """
-    yield select_columns(variables)
+    yield 1, select_columns(variables), -1
     yield """
         FROM
             (
