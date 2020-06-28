@@ -5,7 +5,7 @@
 # sql-constructor
 
 Programming approach and utility functions to construct and maintain
-well-formatted SQL from Python 3.6 or above.
+well-formatted SQL from Python 3.6 and above.
 
 ## Motivation and Philosophy
 
@@ -22,8 +22,8 @@ and a small number of utility functions.
 In particular, the objectives are:
 
 * To have the SQL look as much like SQL within the source Python code.
-* To have the generated SQL looks like it could have been written directly, so
-  that it can be read and understood directly.
+* To have the generated SQL look like it could have been written directly, so
+  that it can be read and understood as easily as possible.
 * To be able to write optimum SQL *in SQL*, rather than trying to write optimum
   SQL from another language but mentally thinking in the target SQL.
 
@@ -32,9 +32,9 @@ In fact, quite the opposite.
 
 ## SQL variants
 
-This library has only been used to generate SQL for PostgreSQL. However it
-should work with other database engines / language variants with little or no
-change. Similarly, it is agnostic to SQL code style conventions because that's
+This library has been used to generate SQL for PostgreSQL. However it should
+work with other database engines / language variants with little or no change.
+Similarly, it is agnostic to SQL code style conventions because that's
 controlled by the programmer.
 
 In fact the whole idea is not really about SQL at all, but about managing text.
