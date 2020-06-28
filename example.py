@@ -4,7 +4,7 @@ sq = sqlcon.single_quote
 dq = sqlcon.double_quote
 
 
-def columns(variables):
+def select_columns(variables):
     yield sqlcon.indented_joinwith(dq(v) for v in variables)
 
 
@@ -32,7 +32,7 @@ def example(variables, condition):
     yield """
         SELECT
     """
-    yield columns(variables)
+    yield select_columns(variables)
     yield """
         FROM
             (
