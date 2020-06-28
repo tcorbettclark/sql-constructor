@@ -4,17 +4,17 @@
 
 # sql-constructor
 
-Programming approach and utility functions to construct and maintain
-well-formatted SQL from Python 3.6 and above.
+Programming approach and utility functions to programmatically construct and
+maintain well-formatted SQL from Python 3.6 and above.
 
 ## Motivation and Philosophy
 
 Like all programming languages, the task of writing maintainable SQL is made a
 little bit easier through good formatting and layout, reducing the cognitive
-load. Doing this with completely static SQL is possible e.g. with static
-formatters, but much harder to achieve when *programmatically* constructing the
-SQL. In my experience one easily looses the formating in *both* the generating
-Python code *and* in the generated SQL. Ouch.
+load on the programmers. Doing this with completely static SQL is possible e.g.
+with static formatters, but is harder to achieve when *programmatically*
+constructing the SQL. In my experience one easily looses the formating in *both*
+the generating Python code *and* in the generated SQL. Ouch.
 
 This package aims to solve this problem with a particular programming pattern
 and a small number of utility functions.
@@ -22,10 +22,10 @@ and a small number of utility functions.
 In particular, the objectives are:
 
 * To have the SQL look as much like SQL within the source Python code whilst
-  still using obvious Python to generate it. Obviously this involves trade-offs.
-* To have the generated SQL look like it could have been written directly, so
+  still using obvious Python to generate it. This involves trade-offs.
+* To have the generated SQL look like it could have been written directly so
   that it can be read and understood as easily as possible.
-* To be able to write optimum SQL *in SQL*, rather than trying to write optimum
+* To be able to write optimum SQL *in SQL* rather than trying to write optimum
   SQL from another language but mentally thinking in the target SQL.
 
 It should be clear that **SQL-Constructor** is not an ORM. There is no abstraction.
@@ -35,7 +35,7 @@ In fact, quite the opposite.
 
 This library has been used to generate SQL for PostgreSQL. However it should
 work with other database engines / language variants with little or no change.
-Similarly, it is agnostic to SQL code style conventions because that's
+Similarly, it is agnostic to SQL code style conventions because that is
 controlled by the programmer.
 
 In fact the whole idea is not really about SQL at all, but about managing text.
@@ -43,7 +43,7 @@ In fact the whole idea is not really about SQL at all, but about managing text.
 ## Example
 
 A simple example will illustrate the approach. From the perspective of SQL the
-subquery is unnecessary, but is used purely to show composition.
+subquery is unnecessary; it is used purely to show composition.
 
 ```python
 import sqlcon
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
 ```
 
-This produces:
+When run this produces:
 
 ```sql
 SELECT
@@ -120,16 +120,16 @@ WHERE
     "name" = 'tim'
 ```
 
-Some relatively subtle things are happening automatically:
+The processing takes strings (for the actual SQL), integers (for manual
+indentation changes), and lists/tuples/generators for composition of the above.
+
+A few relatively subtle things are happening automatically:
 
 1. Common indentation is being removed to left align the base of the generated SQL.
 1. Blank lines are being stripped intelligently. E.g. the start and end of the
-   tripple quoted sql strings.
+   tripple quoted strings.
 1. The indentation levels are being tracked. E.g. note how the subquery is
    indented in the output but not in the input `subquery()` function.
-1. The processing takes strings (for the actual SQL), integers (for manual
-   indentation changes), and lists/tuples/generators for composition of the
-   above.
 
 ## Library functions
 
