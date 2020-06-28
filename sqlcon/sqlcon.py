@@ -1,4 +1,7 @@
+import io
 import sys
+import pathlib
+
 
 __all__ = ["process", "joinwith", "indented_joinwith"]
 
@@ -17,10 +20,8 @@ def _strip(a):
     return a
 
 
-def process(sqlcons, output_file=None, i=0, spaces="    "):
-    """Process "sqlcons" into SQL written to given file object."""
-    if output_file is None:
-        output_file = sys.stdout
+def _process(sqlcons, output_file, i=0, spaces="    "):
+
     # Use an inner function for recursive calling in a closure.
     def f(sqlcons):
         nonlocal i
@@ -45,6 +46,31 @@ def process(sqlcons, output_file=None, i=0, spaces="    "):
                 f(s)
 
     f(sqlcons)
+
+
+def process(sqlcons, output=None, i=0, spaces="    "):
+    """Process "sqlcons" into SQL.
+
+    If `output` is None then return a string.
+    If `output` satisfies the file protocol than write to it directly (and return None).
+    If `output` == "stdout" then write to stdout (and return None).
+    If `output` is a pathlib object or str then try to open a file of that name
+      and write to it (and return None).
+
+    """
+    if output == "stdout":
+        output_file = sys.stdout
+        _process(sqlcons, output_file, i=i, spaces=spaces)
+    elif output is None:
+        output_file = io.StringIO()
+        _process(sqlcons, output_file, i=i, spaces=spaces)
+        return output_file.getvalue()
+    elif isinstance(output, pathlib.Path):
+        with output.open("w") as output_file:
+            _process(sqlcons, output_file, i=i, spaces=spaces)
+    elif isinstance(output, str):
+        with pathlib.Path(output).open("w") as output_file:
+            _process(sqlcons, output_file, i=i, spaces=spaces)
 
 
 def _add_trailing(thing, trailing_text):
