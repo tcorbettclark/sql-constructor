@@ -126,7 +126,7 @@ Some relatively subtle things are happening automatically:
 1. Blank lines are being stripped intelligently. E.g. the start and end of the
    tripple quoted sql strings.
 1. The indentation levels are being tracked. E.g. note how the subquery is
-   indented in the output, but not in the input `subqery()` function.
+   indented in the output but not in the input `subquery()` function.
 1. The processing takes strings (for the actual SQL), integers (for manual
    indentation changes), and lists/tuples/generators for composition of the
    above.
