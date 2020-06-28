@@ -21,7 +21,8 @@ and a small number of utility functions.
 
 In particular, the objectives are:
 
-* To have the SQL look as much like SQL within the source Python code.
+* To have the SQL look as much like SQL within the source Python code whilst
+  still using obvious Python to generate it. Obviously this involves trade-offs.
 * To have the generated SQL look like it could have been written directly, so
   that it can be read and understood as easily as possible.
 * To be able to write optimum SQL *in SQL*, rather than trying to write optimum
@@ -43,13 +44,88 @@ In fact the whole idea is not really about SQL at all, but about managing text.
 
 Some examples will illustrate the approach.
 
-TODO
+```python
+import sqlcon
 
-If that looks like nothing much is happening then good! A few subtle things are
-happening though:
+sq = sqlcon.single_quote
+dq = sqlcon.double_quote
 
-1. Blank lines are being stripped intelligently.
-1. The indentation levels are being tracked.
+
+def select_columns(variables):
+    yield sqlcon.indented_joinwith(dq(v) for v in variables)
+
+
+def subquery():
+    yield """
+        SELECT
+            *
+        FROM
+            some_table
+        LEFT JOIN
+            some_other_table
+        USING
+            some_table.id = some_other_table.key
+    """, -1
+
+
+def where_clause(variables, condition):
+    variable, comparator, constant = condition
+    assert variable in variables, f"Unknown variable: {variable}"
+    assert comparator == "=", f"Unknown comparator: {comparator}"
+    yield f"{dq(variable)} = {sq(constant)}"
+
+
+def example(variables, condition):
+    yield """
+        SELECT
+    """
+    yield select_columns(variables)
+    yield """
+        FROM
+            (
+    """
+    yield 1, subquery(), -1
+    yield """
+            ) AS tmp
+        WHERE
+    """, 1
+    yield where_clause(variables, condition)
+
+
+if __name__ == "__main__":
+    sql = example(["name", "address"], ("name", "=", "tim"))
+    print(sqlcon.process(sql))
+
+```
+
+This produces:
+
+```sql
+SELECT
+    "name",
+    "address"
+FROM
+    (
+        SELECT
+            *
+        FROM
+            some_table
+        LEFT JOIN
+            some_other_table
+        USING
+            some_table.id = some_other_table.key
+    ) AS tmp
+WHERE
+    "name" = 'tim'
+```
+
+Some relatively subtle things are happening automatically:
+
+1. Common indentation is being removed to left align the base of the generated SQL.
+1. Blank lines are being stripped intelligently. E.g. the start and end of the
+   tripple quoted sql strings.
+1. The indentation levels are being tracked. E.g. note how the subquery is
+   indented in the output, but not in the input `subqery()` function.
 1. The processing takes strings (for the actual SQL), integers (for manual
    indentation changes), and lists/tuples/generators for composition of the
    above.
