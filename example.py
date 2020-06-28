@@ -1,29 +1,50 @@
 import sqlcon
 
+sq = sqlcon.single_quote
+dq = sqlcon.double_quote
 
-def abstract_example():
+
+def columns(variables):
+    yield sqlcon.indented_joinwith(dq(v) for v in variables)
+
+
+def subquery():
     yield """
-        level 0
-            level 1
-                level 2
-    """
-    yield """
-                level 2
-            level 1
-    """
-    yield """
-            level 1
+        SELECT
+            *
+        FROM
+            some_table
+        LEFT JOIN
+            some_other_table
+        USING
+            some_table.id = some_other_table.key
     """, -1
+
+
+def where_clause(variables, condition):
+    variable, comparator, constant = condition
+    assert variable in variables, f"Unknown variable: {variable}"
+    assert comparator == "=", f"Unknown comparator: {comparator}"
+    yield f"{dq(variable)} = {sq(constant)}"
+
+
+def example(variables, condition):
     yield """
-        level 0
-            level 1
+        SELECT
     """
-    yield 1, sqlcon.joinwith(["level 2 - fred", "level 2 - alice", "level 2 - bob"])
-    yield -3
+    yield columns(variables)
     yield """
-        level 0
+        FROM
+            (
     """
+    yield 1, subquery(), -1
+    yield """
+            ) AS tmp
+        WHERE
+    """, 1
+    yield where_clause(variables, condition)
 
 
 if __name__ == "__main__":
-    sqlcon.process(abstract_example())
+    sql = example(["name", "address"], ("name", "=", "tim"))
+    print(sqlcon.process(sql))
