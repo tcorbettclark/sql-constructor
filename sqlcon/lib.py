@@ -49,7 +49,8 @@ def double_quote(text):
     Identical to pglib's `PQescapeInternal` with `as_ident = True`. See:
         https://github.com/postgres/postgres/blob/master/src/interfaces/libpq/fe-exec.c#L3443
 
-    That also makes it the same as the PostgreSQL function `quote_ident`.
+    That also makes it the same as the PostgreSQL function `quote_ident`, but
+    with the difference that it is always quoted.
 
     Assume Python is working with the same string encoding as PostgreSQL e.g.
     both UTF8.
