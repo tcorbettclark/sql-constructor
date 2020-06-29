@@ -33,4 +33,4 @@ jobs:
         export PATH=${PATH}:/home/runner/.local/bin
         poetry run nose2 -v --with-coverage --coverage-report xml
         export CODECOV_TOKEN="cf260939-cbc6-4b73-83b0-5e4627b52863"
-        bash <(curl -s https://codecov.io/bash)
+        bash <(curl -s https://codecov.io/bash) -f coverage.xml
