@@ -11,8 +11,8 @@ Like all programming languages, the task of writing maintainable SQL is made a
 little bit easier through good formatting and layout, reducing the cognitive
 load on the programmers. Doing this with completely static SQL is possible e.g.
 with static formatters, but is harder to achieve when *programmatically*
-constructing the SQL. In my experience one easily looses the formating in *both*
-the generating Python code *and* in the generated SQL. Ouch.
+constructing the SQL. One can easily loose the formating in *both* the
+generating Python code *and* in the generated SQL. Ouch.
 
 This package aims to solve this problem with a particular programming pattern
 and a small number of utility functions.
@@ -143,18 +143,19 @@ Note how some relatively subtle things are happening automatically:
 
 ## API
 
-The **SQL Constructor** API consists of the following functions:
+The **SQL Constructor** API consists of a small number of functions. The primary
+function is `process`; the others are auxilliary.
 
-* `process` to convert the SQL strings, indentation integers, and composition of
+* `process` will convert the SQL strings, indentation integers, and composition of
   these as iterables all into output SQL.
-* `single_quote` to correctly quote literal strings for PostgreSQL.
-* `double_quote` to correctly quote identifiers for PostgresSQL.
-* `joinwith` to join lists with commas (e.g. for lists of column identifers or
+* `single_quote` will correctly quote literal strings for PostgreSQL.
+* `double_quote` will correctly quote identifiers for PostgresSQL.
+* `joinwith` will join lists with commas (e.g. for lists of column identifers or
   "IN" clauses) or conditions with "AND" (e.g. for conjunctions in WHERE clauses).
   Can be used either on a single line or across multiple lines with maintained
   indentation.
-* `indented_joinwith` as a shorthand to prefix `joinwth` with an indent and
-  postfix with an outdent.
+* `indented_joinwith` provides a shorthand to prefix `joinwth` with an indent
+  and postfix with an outdent.
 
 See the source code docstrings for details.
 
@@ -182,14 +183,14 @@ Neither of these worked for me.
 
 # Contributions
 
-I'd love to hear of other approaches people have tried. Perhaps there is a
-better way?! Similarly, pull-requests and bug reports etc are all welcome.
+Please share other approaches you have tried. Perhaps there is a better way?!
+Similarly, pull-requests and bug reports etc are all welcome.
 
 # Release checklist
 
 * Run: `black .`
 * Run: `isort -y`
 * Run: `flake8 .`
-* Run: `nose2 -v tests`
+* Run: `nose2 -v --with-coverage --coverage-report xml tests`
 * Run: `poetry export -f requirements.txt >requirements.txt` (for snyk scanning)
 * Ensure `git tag`, the package version (via `poetry version`), and `sqlcon.__version__` are all equal!
