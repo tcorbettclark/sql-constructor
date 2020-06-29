@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sqlcon"
-version = "0.1.3"
+version = "0.1.4"
 description = "Construct indented SQL from Python."
 readme = "README.md"
 authors = ["Timothy Corbett-Clark <timothy.corbettclark@gmail.com>"]
