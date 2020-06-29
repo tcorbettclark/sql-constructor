@@ -1,6 +1,6 @@
 import unittest
 
-from sqlcon import make_valid_name, is_invalid_name
+from sqlcon import is_invalid_name, make_valid_name
 
 
 class TestMakeValidName(unittest.TestCase):

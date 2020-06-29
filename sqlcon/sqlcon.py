@@ -1,7 +1,6 @@
 import io
-import sys
 import pathlib
-
+import sys
 
 __all__ = ["process", "joinwith", "indented_joinwith"]
 

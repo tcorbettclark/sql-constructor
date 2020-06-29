@@ -188,7 +188,7 @@ better way?! Similarly, pull-requests and bug reports etc are all welcome.
 # Release checklist
 
 * Run: `black .`
-* Run: `isort`
+* Run: `isort -y`
 * Run: `flake8 .`
 * Run: `nose2 -v tests`
 * Run: `poetry export -f requirements.txt >requirements.txt` (for snyk scanning)

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sql-constructor"
-version = "0.1.0"
+version = "0.1.1"
 description = "Construct indented SQL from Python."
 authors = ["Timothy Corbett-Clark <timothy.corbettclark@gmail.com>"]
 license = "MIT"

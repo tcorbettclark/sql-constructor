@@ -1,7 +1,7 @@
 import unittest
 
-from sqlcon import single_quote as sq
 from sqlcon import double_quote as dq
+from sqlcon import single_quote as sq
 
 
 class TestSingleQuotes(unittest.TestCase):
