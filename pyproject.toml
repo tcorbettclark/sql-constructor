@@ -5,7 +5,7 @@ description = "Construct indented SQL from Python."
 readme = "README.md"
 authors = ["Timothy Corbett-Clark <timothy.corbettclark@gmail.com>"]
 license = "MIT"
-keywords = ["SQL", "indent", "format" "template", "construct"]
+keywords = ["SQL", "indent", "format", "template", "construct"]
 homepage = "https://github.com/tcorbettclark/sql-constructor"
 
 [tool.poetry.dependencies]
