@@ -1,4 +1,4 @@
-![Tests on 3.6, 3.7, 3.8](https://github.com/tcorbettclark/sql-constructor/workflows/Tests/badge.svg) [![Known Vulnerabilities from Snyk](https://snyk.io/test/github/tcorbettclark/sql-constructor/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/tcorbettclark/sql-constructor?targetFile=requirements.txt) [![codecov](https://codecov.io/gh/tcorbettclark/sql-constructor/branch/master/graph/badge.svg)](https://codecov.io/gh/tcorbettclark/sql-constructor)
+![Tests on 3.6, 3.7, 3.8](https://github.com/tcorbettclark/sql-constructor/workflows/Tests/badge.svg) [![codecov](https://codecov.io/gh/tcorbettclark/sql-constructor/branch/master/graph/badge.svg)](https://codecov.io/gh/tcorbettclark/sql-constructor) [![Known Vulnerabilities from Snyk](https://snyk.io/test/github/tcorbettclark/sql-constructor/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/tcorbettclark/sql-constructor?targetFile=requirements.txt)
 
 # SQL Constructor
 
