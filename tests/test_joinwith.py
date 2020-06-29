@@ -31,3 +31,9 @@ class TestJoinWith(unittest.TestCase):
             sqlcon.joinwith(["a", "b"], separator="-BOO-", include_last=True),
             ["a-BOO-", "b-BOO-"],
         )
+
+    def test_composite(self):
+        self.assertEqual(
+            sqlcon.joinwith([["a", "b"], ["c"], "d", "e"]),
+            [["a", "b,"], ["c,"], "d,", "e"],
+        )

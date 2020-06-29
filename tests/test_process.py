@@ -1,9 +1,17 @@
+import io
+import os
+import pathlib
+import sys
+import tempfile
 import unittest
 
 import sqlcon
 
 
 class TestProcess(unittest.TestCase):
+    def test_degenerate_empty_string(self):
+        self.assertEqual(sqlcon.process(""), "\n")
+
     def test_degenerate_empty_list(self):
         self.assertEqual(sqlcon.process([]), "")
 
@@ -12,6 +20,9 @@ class TestProcess(unittest.TestCase):
 
     def test_degenerate_indent_only(self):
         self.assertEqual(sqlcon.process([1]), "")
+
+    def test_empty_text(self):
+        self.assertEqual(sqlcon.process([""]), "\n")
 
     def test_plain_text(self):
         self.assertEqual(sqlcon.process(["foo"]), "foo\n")
@@ -46,3 +57,33 @@ class TestProcess(unittest.TestCase):
             yield "foo"
 
         self.assertEqual(sqlcon.process(f()), "foo\n    bar\nfoo\n")
+
+
+class TestProcessWrite(unittest.TestCase):
+    def test_write_to_sysout(self):
+        temp = sys.stdout
+        try:
+            sys.stdout = io.StringIO()
+            sqlcon.process("foo", output="stdout")
+            self.assertEqual(sys.stdout.getvalue(), "foo\n")
+        finally:
+            sys.stdout = temp
+
+    def test_write_to_path(self):
+        fd, filename = tempfile.mkstemp()
+        os.close(fd)
+        p = pathlib.Path(filename)
+        try:
+            sqlcon.process("foo", output=p)
+            self.assertEqual(p.read_text(), "foo\n")
+        finally:
+            p.unlink()
+
+    def test_write_to_file(self):
+        fd, filename = tempfile.mkstemp()
+        os.close(fd)
+        try:
+            sqlcon.process("foo", output=filename)
+            self.assertEqual(open(filename).read(), "foo\n")
+        finally:
+            os.unlink(filename)
