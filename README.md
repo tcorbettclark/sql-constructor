@@ -131,23 +131,36 @@ A few relatively subtle things are happening automatically:
 
 ## Library functions
 
-TODO
+A few utility functions are included:
 
+* `single_quote` to correctly quote literal strings for PostgreSQL.
+* `double_quote` to correctly quote identifiers for PostgresSQL.
+* `joinwith` to join lists with commas (e.g. for lists of column identifers or
+  "IN" clauses) or conditions with "AND" (e.g. for conjunctions in WHERE clauses).
+  Can be used either on a single line or across multiple lines with maintained
+  indentation.
+* `indented_joinwith` as a shorthand to prefix `joinwth` with an indent and
+  postfix with an outdent.
+
+## Tests
+
+See the unittests in the `tests/` directory.
 
 # Alternatives
 
 Before deciding to create SQL-Constructor I tried various approaches "in anger"
 on real projects. Most notably:
 
-* Template SQL either with vanilla Jinja2 or variants designed to work with SQL
-  like JinjaSQL (e.g. https://github.com/hashedin/jinjasql). Maintaining
-  formatting is difficult, and now you are working in 2 files (Python and the
-  template) and 3 languages (templating, Python, and SQL).
+* Templating the SQL either with vanilla Jinja2 or variants designed to work
+  with SQL like JinjaSQL (e.g. https://github.com/hashedin/jinjasql).
+  Maintaining formatting is difficult, and now you are working in 2 files
+  (Python and the template) and 3 languages (templating, Python, and SQL).
 
 * Using an ORM like SQLAlchemy. Whilst superficially clean ("it's all just
   Python"), anything more than the most trivial quickly requires mental
-  gymnastics *thinking* in SQL but *writing* in Python, and dropping out of the
-  Python API into native SQL support functions and views etc.
+  gymnastics *thinking* in SQL but *writing* in Python, and needing to drop out
+  of the Python API to create separate SQL support functions and views etc in
+  order to get the most from the database engine.
 
 Neither of these worked for me.
 
