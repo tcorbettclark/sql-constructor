@@ -67,14 +67,15 @@ def subquery():
     """, -1
 
 
-def where_clause(variables, condition):
-    variable, comparator, constant = condition
-    assert variable in variables, f"Unknown variable: {variable}"
-    assert comparator == "=", f"Unknown comparator: {comparator}"
-    yield f"{dq(variable)} = {sq(constant)}"
+def where_clauses(variables, conditions):
+    for condition in conditions:
+        variable, comparator, constant = condition
+        assert variable in variables, f"Unknown variable: {variable}"
+        assert comparator in ("=", "~"), f"Unknown comparator: {comparator}"
+        yield f"{dq(variable)} {comparator} {sq(constant)}"
 
 
-def example(variables, condition):
+def example(variables, conditions):
     yield """
         SELECT
     """
@@ -88,20 +89,26 @@ def example(variables, condition):
             ) AS tmp
         WHERE
     """
-    yield 1, where_clause(variables, condition), -1
+    yield sqlcon.indented_joinwith(
+        where_clauses(variables, conditions), separator=" AND "
+    )
 
 
 if __name__ == "__main__":
-    sql = example(["name", "address"], ("name", "=", "tim"))
+    sql = example(
+        ["name", "age", "address"],
+        [("name", "=", "tim"), ("address", "~", "England")],
+    )
     print(sqlcon.process(sql))
 
 ```
 
-When run this produces:
+When run, this produces:
 
 ```sql
 SELECT
     "name",
+    "age",
     "address"
 FROM
     (
@@ -115,22 +122,24 @@ FROM
             some_table.id = some_other_table.key
     ) AS tmp
 WHERE
-    "name" = 'tim'
+    "name" = 'tim' AND
+    "address" ~ 'England'
 ```
 
 The processing takes strings (for the actual SQL), integers (for manual
 indentation changes), and lists/tuples/generators for composition of the above.
+Clearly this example is rather degenerate. It also mixes a few styles which is
+inconsistent but illustrates a few different approaches.
 
-A few relatively subtle things are happening automatically:
+Note how some relatively subtle things are happening automatically:
 
 1. Common indentation is being removed to left align the base of the generated SQL.
 1. Blank lines are being stripped intelligently. E.g. the start and end of the
    tripple quoted strings.
-1. The indentation levels are being tracked. E.g. note how the subquery is
-   indented in the output but not in the `subquery()` function. So nested layers
-   (such as views within views or views within PostgreSQL functions) can be
-   written neatly without worrying about the indentation of their containing
-   scope.
+1. The indentation levels are being tracked. E.g. the subquery is indented in
+   the output but not in the `subquery()` function. So nested layers (such as
+   views within views or views within PostgreSQL functions) can be written
+   neatly without worrying about the indentation of their containing scope.
 
 ## API
 
