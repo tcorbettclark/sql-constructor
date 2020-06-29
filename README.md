@@ -1,9 +1,9 @@
 ![Tests on 3.6, 3.7, 3.8](https://github.com/tcorbettclark/sql-constructor/workflows/Tests/badge.svg) [![Known Vulnerabilities from Snyk](https://snyk.io/test/github/tcorbettclark/sql-constructor/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/tcorbettclark/sql-constructor?targetFile=requirements.txt)
 
-# sql-constructor
+# SQL Constructor
 
-Programming approach and utility functions to programmatically construct and
-maintain well-formatted SQL from Python 3.6 and above.
+A programming approach (and supporting functions) to programmatically construct
+and maintain well-formatted SQL from Python 3.6 and above.
 
 ## Motivation and Philosophy
 
@@ -26,7 +26,7 @@ In particular, the objectives are:
 * To be able to write optimum SQL *in SQL* rather than trying to write optimum
   SQL from another language but mentally thinking in the target SQL.
 
-It should be clear that **SQL-Constructor** is not an ORM. There is no abstraction.
+It should be clear that **SQL Constructor** is not an ORM. There is no abstraction.
 In fact, quite the opposite.
 
 ## SQL variants
@@ -132,10 +132,12 @@ A few relatively subtle things are happening automatically:
    written neatly without worrying about the indentation of their containing
    scope.
 
-## Utility functions
+## API
 
-The following utility functions are also included:
+The **SQL Constructor** API consists of the following functions:
 
+* `process` to convert the SQL strings, indentation integers, and composition of
+  these as iterables all into output SQL.
 * `single_quote` to correctly quote literal strings for PostgreSQL.
 * `double_quote` to correctly quote identifiers for PostgresSQL.
 * `joinwith` to join lists with commas (e.g. for lists of column identifers or
@@ -145,14 +147,16 @@ The following utility functions are also included:
 * `indented_joinwith` as a shorthand to prefix `joinwth` with an indent and
   postfix with an outdent.
 
+See the source code docstrings for details.
+
 ## Tests
 
 See the unittests in the `tests/` directory.
 
 # Alternatives
 
-Before deciding to create SQL-Constructor I tried various approaches "in anger"
-on real projects. Most notably:
+Before deciding to create **SQL Constructor** I tried various approaches "in
+anger" on real projects. Most notably:
 
 * Templating the SQL either with vanilla Jinja2 or variants designed to work
   with SQL like JinjaSQL (e.g. https://github.com/hashedin/jinjasql).
@@ -167,7 +171,10 @@ on real projects. Most notably:
 
 Neither of these worked for me.
 
-I'd love to hear of other approaches people have tried...
+# Contributions
+
+I'd love to hear of other approaches people have tried. Perhaps there is a
+better way?! Similarly, pull-requests and bug reports etc are all welcome.
 
 # Release checklist
 
