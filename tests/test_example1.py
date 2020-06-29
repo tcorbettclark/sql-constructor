@@ -1,3 +1,5 @@
+import unittest
+
 import sqlcon
 
 sq = sqlcon.single_quote
@@ -45,6 +47,26 @@ def example(variables, condition):
     yield where_clause(variables, condition)
 
 
-if __name__ == "__main__":
-    sql = example(["name", "address"], ("name", "=", "tim"))
-    print(sqlcon.process(sql))
+class TestExample1(unittest.TestCase):
+    def test_example1(self):
+        sql = example(["name", "address"], ("name", "=", "tim"))
+        self.assertEqual(
+            sqlcon.process(sql),
+            """SELECT
+    "name",
+    "address"
+FROM
+    (
+        SELECT
+            *
+        FROM
+            some_table
+        LEFT JOIN
+            some_other_table
+        USING
+            some_table.id = some_other_table.key
+    ) AS tmp
+WHERE
+    "name" = 'tim'
+""",
+        )
