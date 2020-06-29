@@ -134,6 +134,25 @@ A few relatively subtle things are happening automatically:
 TODO
 
 
+# Alternatives
+
+Before deciding to create SQL-Constructor I tried various approaches "in anger"
+on real projects. Most notably:
+
+* Template SQL either with vanilla Jinja2 or variants designed to work with SQL
+  like JinjaSQL (e.g. https://github.com/hashedin/jinjasql). Maintaining
+  formatting is difficult, and now you are working in 2 files (Python and the
+  template) and 3 languages (templating, Python, and SQL).
+
+* Using an ORM like SQLAlchemy. Whilst superficially clean ("it's all just
+  Python"), anything more than the most trivial quickly requires mental
+  gymnastics *thinking* in SQL but *writing* in Python, and dropping out of the
+  Python API into native SQL support functions and views etc.
+
+Neither of these worked for me.
+
+I'd love to hear of other approaches people have tried...
+
 # Release checklist
 
 * Run: `black .`
