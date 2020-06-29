@@ -33,7 +33,7 @@ def single_quote(text):
     both UTF8.
 
     """
-    assert isinstance(text, str)
+    text = str(text)
     quote = "'"
     backslash = "\\"
     opening = f" E{quote}" if backslash in text else quote
@@ -56,7 +56,7 @@ def double_quote(text):
     both UTF8.
 
     """
-    assert isinstance(text, str)
+    text = str(text)
     quote = '"'
     opening = quote
     closing = quote
