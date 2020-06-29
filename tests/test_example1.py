@@ -23,14 +23,15 @@ def subquery():
     """, -1
 
 
-def where_clause(variables, condition):
-    variable, comparator, constant = condition
-    assert variable in variables, f"Unknown variable: {variable}"
-    assert comparator == "=", f"Unknown comparator: {comparator}"
-    yield f"{dq(variable)} = {sq(constant)}"
+def where_clauses(variables, conditions):
+    for condition in conditions:
+        variable, comparator, constant = condition
+        assert variable in variables, f"Unknown variable: {variable}"
+        assert comparator in ("=", "~"), f"Unknown comparator: {comparator}"
+        yield f"{dq(variable)} {comparator} {sq(constant)}"
 
 
-def example(variables, condition):
+def example(variables, conditions):
     yield """
         SELECT
     """
@@ -44,16 +45,22 @@ def example(variables, condition):
             ) AS tmp
         WHERE
     """
-    yield 1, where_clause(variables, condition), -1
+    yield sqlcon.indented_joinwith(
+        where_clauses(variables, conditions), separator=" AND "
+    )
 
 
 class TestExample1(unittest.TestCase):
     def test_example1(self):
-        sql = example(["name", "address"], ("name", "=", "tim"))
+        sql = example(
+            ["name", "age", "address"],
+            [("name", "=", "tim"), ("address", "~", "England")],
+        )
         self.assertEqual(
             sqlcon.process(sql),
             """SELECT
     "name",
+    "age",
     "address"
 FROM
     (
@@ -67,6 +74,7 @@ FROM
             some_table.id = some_other_table.key
     ) AS tmp
 WHERE
-    "name" = 'tim'
+    "name" = 'tim' AND
+    "address" ~ 'England'
 """,
         )
