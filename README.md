@@ -191,6 +191,6 @@ Similarly, pull-requests and bug reports etc are all welcome.
 * Run: `black .`
 * Run: `isort -y`
 * Run: `flake8 .`
-* Run: `nose2 -v --with-coverage --coverage-report xml tests`
+* Run: `nose2 -v --with-coverage tests`
 * Run: `poetry export -f requirements.txt >requirements.txt` (for snyk scanning)
 * Ensure `git tag`, the package version (via `poetry version`), and `sqlcon.__version__` are all equal!
