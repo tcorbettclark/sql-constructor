@@ -43,8 +43,8 @@ def example(variables, condition):
     yield """
             ) AS tmp
         WHERE
-    """, 1
-    yield where_clause(variables, condition)
+    """
+    yield 1, where_clause(variables, condition), -1
 
 
 class TestExample1(unittest.TestCase):
