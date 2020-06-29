@@ -87,8 +87,8 @@ def example(variables, condition):
     yield """
             ) AS tmp
         WHERE
-    """, 1
-    yield where_clause(variables, condition)
+    """
+    yield 1, where_clause(variables, condition), -1
 
 
 if __name__ == "__main__":
@@ -127,11 +127,14 @@ A few relatively subtle things are happening automatically:
 1. Blank lines are being stripped intelligently. E.g. the start and end of the
    tripple quoted strings.
 1. The indentation levels are being tracked. E.g. note how the subquery is
-   indented in the output but not in the input `subquery()` function.
+   indented in the output but not in the `subquery()` function. So nested layers
+   (such as views within views or views within PostgreSQL functions) can be
+   written neatly without worrying about the indentation of their containing
+   scope.
 
-## Library functions
+## Utility functions
 
-A few utility functions are included:
+The following utility functions are also included:
 
 * `single_quote` to correctly quote literal strings for PostgreSQL.
 * `double_quote` to correctly quote identifiers for PostgresSQL.
