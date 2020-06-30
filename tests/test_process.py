@@ -87,3 +87,12 @@ class TestProcessWrite(unittest.TestCase):
             self.assertEqual(open(filename).read(), "foo\n")
         finally:
             os.unlink(filename)
+
+    def test_write_to_file_like_object(self):
+        output = io.StringIO()
+        sqlcon.process("foo", output=output)
+        self.assertEqual(output.getvalue(), "foo\n")
+
+    def test_write_to_unwritable_object(self):
+        with self.assertRaises(ValueError):
+            sqlcon.process("foo", output=object())

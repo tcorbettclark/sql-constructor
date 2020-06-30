@@ -51,25 +51,29 @@ def process(sqlcons, output=None, i=0, spaces="    "):
     """Process "sqlcons" into SQL.
 
     If `output` is None then return a string.
-    If `output` satisfies the file protocol than write to it directly (and return None).
+    If `output` has a `.write` method then write to it directly (and return None).
     If `output` == "stdout" then write to stdout (and return None).
     If `output` is a pathlib object or str then try to open a file of that name
       and write to it (and return None).
 
     """
-    if output == "stdout":
-        output_file = sys.stdout
-        _process(sqlcons, output_file, i=i, spaces=spaces)
-    elif output is None:
+    if output is None:
         output_file = io.StringIO()
         _process(sqlcons, output_file, i=i, spaces=spaces)
         return output_file.getvalue()
+    elif hasattr(output, "write"):
+        _process(sqlcons, output, i=i, spaces=spaces)
+    elif output == "stdout":
+        output_file = sys.stdout
+        _process(sqlcons, output_file, i=i, spaces=spaces)
     elif isinstance(output, pathlib.Path):
         with output.open("w") as output_file:
             _process(sqlcons, output_file, i=i, spaces=spaces)
     elif isinstance(output, str):
         with pathlib.Path(output).open("w") as output_file:
             _process(sqlcons, output_file, i=i, spaces=spaces)
+    else:
+        raise ValueError(f"Unknown output object: {output!r}")
 
 
 def _add_trailing(thing, trailing_text: str):
